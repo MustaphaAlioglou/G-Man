@@ -6,7 +6,7 @@ public class DestroyText : MonoBehaviour
 {
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "Word(Clone)")
+        if (collision.gameObject.name == "Text(Clone)")
         {
             Destroy(collision.gameObject);
         }
