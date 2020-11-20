@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Score : MonoBehaviour
@@ -26,6 +27,12 @@ public class Score : MonoBehaviour
         {
             score += -1;
             negativeCounter = 0;
+        }
+
+        if (score < 0)
+        {
+            var ee = new SceneLoader();
+            ee.loadGameOver();
         }
     }
 }

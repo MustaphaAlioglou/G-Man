@@ -3,27 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using System.Linq;
+using System.Text;
 
 public class SaveSystem
 {
-    private string _pathToSave = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+     private string _pathToSave = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
     public void Save(string Name, string Score)
     {
+       
         if (Directory.Exists(_pathToSave + @"\SaveGame") && File.Exists(_pathToSave + @"\SaveGame\Score.csv"))
         {
+            
+            if (new FileInfo(_pathToSave + @"\SaveGame\Score.csv").Length == 0)
+            {
+                string LineToAdd =  Name + "," + Score + "\n";
+                File.AppendAllText(_pathToSave + @"\SaveGame\Score.csv", LineToAdd);
+
+            }
+            else
+            {
+                 string LineToAdd =  Name + "," + Score + "\n";
+                File.AppendAllText(_pathToSave + @"\SaveGame\Score.csv", LineToAdd);
+            }
         }
         else
         {
             Directory.CreateDirectory(_pathToSave + @"\SaveGame");
-            File.Create(_pathToSave + @"\SaveGame\Score.csv");
+            var file = File.Create(_pathToSave + @"\SaveGame\Score.csv");
+            file.Close();
+            string LineToAdd = Name + "," + Score + "\n";
+            File.AppendAllText(_pathToSave + @"\SaveGame\Score.csv", LineToAdd);
         }
-        string Save = Name + "," + Score + "\n";
-        File.AppendAllText(_pathToSave + @"\SaveGame\Score.csv", Save);
+      
     }
 
     public List<string[]> GetScores()
     {
+        if (!(Directory.Exists(_pathToSave + @"\SaveGame") && File.Exists(_pathToSave + @"\SaveGame\Score.csv")))
+        {
+            Directory.CreateDirectory(_pathToSave + @"\SaveGame");
+            var file = File.Create(_pathToSave + @"\SaveGame\Score.csv");
+            file.Close();
+        }
         string[] lines = File.ReadAllLines(_pathToSave + @"\SaveGame\Score.csv");
         List<string[]> ScoreBoard = new List<string[]>();
         foreach (var line in lines)

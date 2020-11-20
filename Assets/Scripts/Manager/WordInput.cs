@@ -9,6 +9,13 @@ public class WordInput : MonoBehaviour
     private void Update()
     {
         foreach (char character in Input.inputString)
+        {
             manager.TypeLetter(character);
+            if (character == '0')
+            {
+                SceneLoader ee = new SceneLoader();
+                ee.loadGameOver();
+            }
+        }
     }
 }
