@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Text;
 using System.Linq;
@@ -26,6 +27,7 @@ public class ScoreBoard : MonoBehaviour
         _scoreBoard = save.GetScores();
         StringBuilder names = new StringBuilder();
         StringBuilder scores = new StringBuilder();
+
         _scoreBoard = _scoreBoard.OrderByDescending(x => x[1]).ToList();
         if (_scoreBoard.Count > 10)
         {
@@ -46,38 +48,36 @@ public class ScoreBoard : MonoBehaviour
         Names.text = names.ToString();
         Scores.text = scores.ToString();
         //---------------------------------------------------
-        if (!starting)
+
+        if (_scoreBoard.Count > 10)
         {
-            if (_scoreBoard.Count > 10)
+            for (int i = 0; i < 10; i++)
             {
-                for (int i = 0; i < 10; i++)
+                if (Score.score > Convert.ToInt32(_scoreBoard[i][1]))
                 {
-                    if (Score.score > Convert.ToInt32(_scoreBoard[i][1]))
-                    {
-                        _BestScore = true;
-                        inputButton.SetActive(true);
-                        inputText.SetActive(true);
-                    }
+                    _BestScore = true;
+                    inputButton.SetActive(true);
+                    inputText.SetActive(true);
                 }
             }
-            else if (_scoreBoard.Count < 10 && _scoreBoard.Count > 0)
+        }
+        else if (_scoreBoard.Count < 10 && _scoreBoard.Count > 0)
+        {
+            for (int i = 0; i < _scoreBoard.Count; i++)
             {
-                for (int i = 0; i < _scoreBoard.Count; i++)
+                if (Score.score > Convert.ToInt32(_scoreBoard[i][1]))
                 {
-                    if (Score.score > Convert.ToInt32(_scoreBoard[i][1]))
-                    {
-                        _BestScore = true;
-                        inputButton.SetActive(true);
-                        inputText.SetActive(true);
-                    }
+                    _BestScore = true;
+                    inputButton.SetActive(true);
+                    inputText.SetActive(true);
                 }
             }
-            else if (_scoreBoard.Count == 0)
-            {
-                _BestScore = true;
-                inputButton.SetActive(true);
-                inputText.SetActive(true);
-            }
+        }
+        else if (_scoreBoard.Count == 0)
+        {
+            _BestScore = true;
+            inputButton.SetActive(true);
+            inputText.SetActive(true);
         }
     }
 
@@ -89,6 +89,9 @@ public class ScoreBoard : MonoBehaviour
 
             SaveSystem save = new SaveSystem();
             save.Save(name, Score.score.ToString());
+            inputButton.SetActive(false);
+            inputText.SetActive(false);
+            SceneManager.LoadScene("Startup");
         }
     }
 }
