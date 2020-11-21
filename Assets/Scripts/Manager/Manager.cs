@@ -28,7 +28,6 @@ public class Manager : MonoBehaviour
         {
             foreach (Word word in words)
             {
-                Score.negativeCounter += 1;
                 Score.CheckNegative();
 
                 if (word.CurrentCharacter() == letter)

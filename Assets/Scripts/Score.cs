@@ -8,8 +8,8 @@ public class Score : MonoBehaviour
 {
     public static int score = 0;
     private Text _scoreText;
-    public static int negativeCounter = 0;
-    private static int _minimumCharactersToFail = 3;//add +1 on your desired number
+    public static int wrongCharacterCounter = 0;
+    private static int _maxCharactersToFail = 20;//add +1 on your desired number
 
     private void Start()
     {
@@ -23,16 +23,14 @@ public class Score : MonoBehaviour
 
     public static void CheckNegative()
     {
-        if (negativeCounter > _minimumCharactersToFail)
+        wrongCharacterCounter += 1;
+        if (wrongCharacterCounter < _maxCharactersToFail)
         {
             score += -1;
-            negativeCounter = 0;
         }
-
-        if (score < 0)
+        else if (wrongCharacterCounter > _maxCharactersToFail)
         {
-            var ee = new SceneLoader();
-            ee.loadGameOver();
+            SceneManager.LoadScene("GameOver");
         }
     }
 }
